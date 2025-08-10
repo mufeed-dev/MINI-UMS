@@ -1,6 +1,8 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
+const randomstring = require("randomstring");
+const config = require("../config/config");
 
 const securePassword = async (password) => {
   try {
@@ -20,18 +22,49 @@ const sendVerifyMail = async (name, email, user_id) => {
       secure: false,
       requireTLS: true,
       auth: {
-        user: "mufeed.temp@gmail.com",
-        pass: "vbsp euhn hxqg jgge",
+        user: config.emailUser,
+        pass: config.emailPassword,
       },
     });
     const mailOptions = {
-      from: "mufeed.temp@gmail.com",
+      from: config.emailUser,
       to: email,
       subject: "For Verification mail",
       html:
         `<p>hi ${name}, please click here <a href="http://127.0.0.1:3000/verify?id=` +
         user_id +
         `"> Verify</a> your mail.</p>`,
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) console.log(error);
+      else console.log("Email has been sent", info.response);
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+// reset-mail
+const sendResetMail = async (name, email, token) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      requireTLS: true,
+      auth: {
+        user: config.emailUser,
+        pass: config.emailPassword,
+      },
+    });
+    const mailOptions = {
+      from: config.emailUser,
+      to: email,
+      subject: "For Reset Password",
+      html:
+        `<p>hi ${name}, please click here <a href="http://127.0.0.1:3000/forget-password?token=` +
+        token +
+        `"> Reset</a> your password.</p>`,
     };
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) console.log(error);
@@ -134,6 +167,70 @@ const loadHome = async (req, res) => {
   }
 };
 
+// forget password load
+const forgetLoad = async (req, res) => {
+  try {
+    res.render("forget");
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const forgetVerify = async (req, res) => {
+  try {
+    const email = req.body.email;
+    const userData = await User.findOne({ email: email });
+    if (userData) {
+      if (userData.is_verified === 0) {
+        res.render("forget", { message: "Please verify your email" });
+      } else {
+        const randomString = randomstring.generate();
+        const updatedData = await User.updateOne(
+          { email: email },
+          { $set: { token: randomString } }
+        );
+        sendResetMail(userData.name, userData.email, randomString);
+        res.render("forget", {
+          message: "Please check your mail to reset your password",
+        });
+      }
+    } else {
+      res.render("forget", { message: "User email is incorrect" });
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const forgetPassLoad = async (req, res) => {
+  try {
+    const token = req.query.token;
+    const tokenData = await User.findOne({ token: token });
+    if (tokenData) {
+      res.render("forget-password", { user_id: tokenData._id });
+    } else {
+      res.render("404", { message: "Token is Invalid" });
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const resetPassword = async (req, res) => {
+  try {
+    const password = req.body.password;
+    const user_id = req.body.user_id;
+    const securePass = await securePassword(password);
+    const updatedData = await User.findByIdAndUpdate(
+      { _id: user_id },
+      { $set: { password: securePass, token: "" } }
+    );
+    res.redirect("/");
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 module.exports = {
   loadRegister,
   insertUser,
@@ -141,4 +238,8 @@ module.exports = {
   loginLoad,
   verifyLogin,
   loadHome,
+  forgetLoad,
+  forgetVerify,
+  forgetPassLoad,
+  resetPassword,
 };

@@ -36,5 +36,13 @@ user_route.get("/", auth.isLogout, userController.loginLoad);
 user_route.get("/login", auth.isLogout, userController.loginLoad);
 user_route.post("/login", userController.verifyLogin);
 user_route.get("/home", auth.isLogin, userController.loadHome);
+user_route.get("/forget", auth.isLogout, userController.forgetLoad);
+user_route.post("/forget", userController.forgetVerify);
+user_route.get(
+  "/forget-password",
+  auth.isLogout,
+  userController.forgetPassLoad
+);
+user_route.post("/forget-password", userController.resetPassword);
 
 module.exports = user_route;
