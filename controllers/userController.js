@@ -29,7 +29,7 @@ const sendVerifyMail = async (name, email, user_id) => {
       to: email,
       subject: "For Verification mail",
       html:
-        `<p>hi ${name}, please click here <a href="http:127.0.0.1:3000/verify?id=` +
+        `<p>hi ${name}, please click here <a href="http://127.0.0.1:3000/verify?id=` +
         user_id +
         `"> Verify</a> your mail.</p>`,
     };
@@ -78,7 +78,7 @@ const insertUser = async (req, res) => {
   }
 };
 
-const verfiyMail = async (req, res) => {
+const verifyMail = async (req, res) => {
   try {
     const updateInfo = await User.updateOne(
       { _id: req.query.id },
@@ -91,8 +91,54 @@ const verfiyMail = async (req, res) => {
   }
 };
 
+// login user methods
+const loginLoad = async (req, res) => {
+  try {
+    res.render("login");
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const verifyLogin = async (req, res) => {
+  try {
+    const email = req.body.email;
+    const password = req.body.password;
+    const userData = await User.findOne({ email: email });
+
+    if (userData) {
+      const passwordMatch = await bcrypt.compare(password, userData.password);
+      if (passwordMatch) {
+        if (userData.is_verified === 0) {
+          res.render("login", { message: "Please verify your email" });
+        } else {
+          req.session.user_id = userData._id;
+          res.redirect("/home");
+        }
+      } else {
+        res.render("login", { message: "Email and Password is incorrect" });
+      }
+    } else {
+      res.render("login", { message: "Email and Password is incorrect" });
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const loadHome = async (req, res) => {
+  try {
+    res.render("home");
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 module.exports = {
   loadRegister,
   insertUser,
-  verfiyMail,
+  verifyMail,
+  loginLoad,
+  verifyLogin,
+  loadHome,
 };
