@@ -28,6 +28,7 @@ admin_route.get(
   adminController.forgetPasswordLoad
 );
 admin_route.post("/forget-password", adminController.forgetPassword);
+admin_route.get("/dashboard", auth.isLogin, adminController.adminDashboard);
 
 admin_route.get("*any", (req, res) => {
   res.redirect("/admin");

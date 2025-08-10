@@ -77,11 +77,13 @@ const verifyLogin = async (req, res) => {
 
 const loadDashboard = async (req, res) => {
   try {
-    res.render("home");
+    const adminData = await User.findOne({ _id: req.session.admin_id });
+    res.render("home", { admin: adminData });
   } catch (error) {
     console.log(error.message);
   }
 };
+
 const logout = async (req, res) => {
   try {
     delete req.session.admin_id;
@@ -155,6 +157,14 @@ const forgetPassword = async (req, res) => {
   }
 };
 
+const adminDashboard = async (req, res) => {
+  try {
+    res.render("dashboard");
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 module.exports = {
   loadLogin,
   verifyLogin,
@@ -164,4 +174,5 @@ module.exports = {
   forgetVerify,
   forgetPasswordLoad,
   forgetPassword,
+  adminDashboard,
 };
