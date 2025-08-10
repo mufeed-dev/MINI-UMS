@@ -159,7 +159,8 @@ const forgetPassword = async (req, res) => {
 
 const adminDashboard = async (req, res) => {
   try {
-    res.render("dashboard");
+    const usersData = await User.find({ is_admin: 0 });
+    res.render("dashboard", { users: usersData });
   } catch (error) {
     console.log(error.message);
   }
