@@ -44,5 +44,7 @@ user_route.get(
   userController.forgetPassLoad
 );
 user_route.post("/forget-password", userController.resetPassword);
+user_route.get("/verification", userController.verificationLoad);
+user_route.post("/verification", userController.sendVerificationLink);
 
 module.exports = user_route;
