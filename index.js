@@ -7,6 +7,10 @@ const app = express();
 // user routes
 const userRoute = require("./routes/userRoute");
 app.use("/", userRoute);
+//  admin routes
+const adminRoute = require("./routes/adminRoute");
+app.use("/admin", adminRoute);
+
 app.listen(3000, () => {
   console.log("Server is running...");
 });
