@@ -15,6 +15,8 @@ user_route.use(bodyParser.urlencoded({ extended: true }));
 
 const multer = require("multer");
 const path = require("path");
+
+user_route.use(express.static("public"));
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join(__dirname, "../public/userImages"));
@@ -46,5 +48,6 @@ user_route.get(
 user_route.post("/forget-password", userController.resetPassword);
 user_route.get("/verification", userController.verificationLoad);
 user_route.post("/verification", userController.sendVerificationLink);
+user_route.get("/logout", userController.userLogout);
 
 module.exports = user_route;

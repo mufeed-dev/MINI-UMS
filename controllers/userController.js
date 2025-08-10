@@ -161,7 +161,8 @@ const verifyLogin = async (req, res) => {
 
 const loadHome = async (req, res) => {
   try {
-    res.render("home");
+    const userData = await User.findById({ _id: req.session.user_id });
+    res.render("home", { user: userData });
   } catch (error) {
     console.log(error.message);
   }
@@ -262,6 +263,16 @@ const sendVerificationLink = async (req, res) => {
   }
 };
 
+//user logout
+const userLogout = async (req, res) => {
+  try {
+    delete req.session.user_id;
+    res.redirect("/login");
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 module.exports = {
   loadRegister,
   insertUser,
@@ -275,4 +286,5 @@ module.exports = {
   resetPassword,
   verificationLoad,
   sendVerificationLink,
+  userLogout,
 };
