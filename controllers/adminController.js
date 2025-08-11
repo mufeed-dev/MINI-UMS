@@ -232,6 +232,40 @@ const addUser = async (req, res) => {
   }
 };
 
+// edit user
+const editUser = async (req, res) => {
+  try {
+    const id = req.query.id;
+    const userData = await User.findById({ _id: id });
+    if (userData) {
+      res.render("edit-user", { users: userData });
+    } else {
+      res.redirect("/admin/dashboard");
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const updateUser = async (req, res) => {
+  try {
+    const userData = await User.findByIdAndUpdate(
+      { _id: req.body.id },
+      {
+        $set: {
+          name: req.body.name,
+          email: req.body.email,
+          mobile: req.body.mobile,
+          is_verified: req.body.verify,
+        },
+      }
+    );
+    res.redirect("/admin/dashboard");
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 module.exports = {
   loadLogin,
   verifyLogin,
@@ -244,4 +278,6 @@ module.exports = {
   adminDashboard,
   newUser,
   addUser,
+  editUser,
+  updateUser,
 };

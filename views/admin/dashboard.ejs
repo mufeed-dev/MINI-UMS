@@ -31,6 +31,7 @@
     <th>Mobile</th>
     <th>Image</th>
     <th>Verified</th>
+    <th>Action</th>
   </tr>
   <% if(users.length > 0) { for(let i = 0; i < users.length; i++) { %>
   <tr>
@@ -43,6 +44,7 @@
       <% } else { %> No Image <% } %>
     </td>
     <td><%= users[i].is_verified === 1 ? "✅" : "❌" %></td>
+    <td><a href="/admin/edit-user?id=<%= users[i]._id %>">Edit</a></td>
   </tr>
   <% } } else { %>
   <tr>

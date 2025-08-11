@@ -47,6 +47,8 @@ admin_route.post("/forget-password", adminController.forgetPassword);
 admin_route.get("/dashboard", auth.isLogin, adminController.adminDashboard);
 admin_route.get("/new-user", auth.isLogin, adminController.newUser);
 admin_route.post("/new-user", upload.single("image"), adminController.addUser);
+admin_route.get("/edit-user", auth.isLogin, adminController.editUser);
+admin_route.post("/edit-user", adminController.updateUser);
 
 admin_route.get("*any", (req, res) => {
   res.redirect("/admin");
