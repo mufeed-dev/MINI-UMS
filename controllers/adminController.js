@@ -43,6 +43,36 @@ const sendResetMail = async (name, email, token) => {
   }
 };
 
+const addUserMail = async (name, email, password, admin_id) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      requireTLS: true,
+      auth: {
+        user: config.emailUser,
+        pass: config.emailPassword,
+      },
+    });
+    const mailOptions = {
+      from: config.emailUser,
+      to: email,
+      subject: "Verify Your Mail",
+      html:
+        `<p>hi ${name}, please click here <a href="http://127.0.0.1:3000/verify?id=` +
+        admin_id +
+        `"> Verify</a> your mail.</p><br><br> <b>Email:-</b>${email}<br> <b>Pasword:-</b>${password}`,
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) console.log(error);
+      else console.log("Email has been sent", info.response);
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 const loadLogin = async (req, res) => {
   try {
     res.render("login");
@@ -166,6 +196,42 @@ const adminDashboard = async (req, res) => {
   }
 };
 
+// add new user
+const newUser = async (req, res) => {
+  try {
+    res.render("new-user");
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const addUser = async (req, res) => {
+  try {
+    const { name, email, mobile } = req.body;
+    const image = req.file.filename;
+    const password = randomstring.generate(8);
+    const sPassword = await securePassword(password);
+
+    const user = new User({
+      name: name,
+      email: email,
+      mobile: mobile,
+      image: image,
+      password: sPassword,
+      is_admin: 0,
+    });
+    const userData = await user.save();
+    if (userData) {
+      addUserMail(name, email, password, userData._id);
+      res.redirect("/admin/dashboard");
+    } else {
+      res.render("new-user", { message: "failed to add user" });
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 module.exports = {
   loadLogin,
   verifyLogin,
@@ -176,4 +242,6 @@ module.exports = {
   forgetPasswordLoad,
   forgetPassword,
   adminDashboard,
+  newUser,
+  addUser,
 };
