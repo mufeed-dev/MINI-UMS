@@ -1,14 +1,39 @@
-<% include('../layouts/header.ejs') %>
+<%- include('../layouts/header.ejs') %>
 
-<h1>Verification</h1>
+<div class="verification-container">
+  <div class="verification-icon">
+    <i class="fas fa-envelope"></i>
+  </div>
+  <h1>Email Verification</h1>
+  <p class="verification-text">
+    Enter your email address to receive a verification link. Please check your
+    inbox after submitting.
+  </p>
 
-<% if(typeof message !== 'undefined'){ %>
-<h4><%= message %></h4>
-<% } %>
+  <% if(typeof message !== 'undefined'){ %>
+  <div
+    class="alert-message <%= typeof messageType !== 'undefined' ? messageType : '' %>"
+  >
+    <%= message %>
+  </div>
+  <% } %>
 
-<form action="/verification" method="post">
-  <input type="email" name="email" required placeholder="Enter email" />
-  <br /><br /><input type="submit" value="Send verifcation Link" />
-</form>
+  <form action="/verification" method="post">
+    <div class="form-group">
+      <input
+        type="email"
+        name="email"
+        class="form-input"
+        placeholder="Enter your email address"
+        required
+        autocomplete="email"
+      />
+    </div>
 
-<% include('../layouts/footer.ejs') %>
+    <button type="submit" class="submit-btn">
+      <i class="fas fa-paper-plane"></i> Send Verification Link
+    </button>
+  </form>
+</div>
+
+<%- include('../layouts/footer.ejs') %>

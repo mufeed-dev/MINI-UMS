@@ -266,6 +266,17 @@ const updateUser = async (req, res) => {
   }
 };
 
+// delete User
+const deleteUser = async (req, res) => {
+  try {
+    const id = req.query.id;
+    await User.deleteOne({ _id: id });
+    res.redirect("/admin/dashboard");
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 module.exports = {
   loadLogin,
   verifyLogin,
@@ -280,4 +291,5 @@ module.exports = {
   addUser,
   editUser,
   updateUser,
+  deleteUser,
 };

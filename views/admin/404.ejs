@@ -1,1 +1,11 @@
-<h1><%=message%></h1>
+<%- include('../layouts/header.ejs') %>
+
+<div class="error-page">
+  <div class="error-container">
+    <div class="error-code">404</div>
+    <h1 class="error-message"><%= message %></h1>
+    <a href="/" class="home-link">Return to Homepage</a>
+  </div>
+</div>
+
+<%- include('../layouts/footer.ejs') %>

@@ -1,23 +1,42 @@
-<% include('../layouts/header.ejs') %>
+<%- include('../layouts/header.ejs') %>
 
-<h1>Login</h1>
+<div class="user-login">
+  <div class="login-container">
+    <h1>Login</h1>
 
-<% if(typeof message !== 'undefined'){ %>
-<h4><%= message %></h4>
-<% } %>
+    <% if(typeof message !== 'undefined'){ %>
+    <div class="alert-message"><%= message %></div>
+    <% } %>
 
-<form action="/login" method="post">
-  <input type="email" name="email" required placeholder="Enter email" />
-  <input
-    type="password"
-    name="password"
-    required
-    placeholder="Enter Password"
-  />
-  <input type="submit" value="Login" />
-</form>
+    <form action="/login" method="post">
+      <div class="form-group">
+        <input
+          type="email"
+          name="email"
+          class="form-input"
+          placeholder="Email Address"
+          required
+          autocomplete="username"
+        />
+        <input
+          type="password"
+          name="password"
+          class="form-input"
+          placeholder="Password"
+          required
+          autocomplete="current-password"
+        />
+      </div>
 
-<a href="/forget">Forget Password</a>
-<a href="/verification">Send Verify Mail</a>
+      <button type="submit" class="submit-btn">Login</button>
+    </form>
 
-<% include('../layouts/footer.ejs') %>
+    <div class="auth-links">
+      <a href="/register" class="auth-link">Register Account</a>
+      <a href="/forget" class="auth-link">Forgot Password?</a>
+      <a href="/verification" class="auth-link">Resend Verification Email</a>
+    </div>
+  </div>
+</div>
+
+<%- include('../layouts/footer.ejs') %>

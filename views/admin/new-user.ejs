@@ -1,31 +1,59 @@
-<% include('../layouts/header.ejs') %>
+<%- include('../layouts/header.ejs') %>
 
-<h1>Add New User</h1>
-<form action="" method="post" enctype="multipart/form-data">
-  <input
-    type="text"
-    name="name"
-    placeholder="Enter Name"
-    required
-  /><br /><br />
-  <input
-    type="email"
-    name="email"
-    placeholder="Enter Email"
-    required
-  /><br /><br />
-  <input
-    type="text"
-    name="mobile"
-    placeholder="Enter Mobile"
-    required
-  /><br /><br />
-  <input type="file" name="image" required /><br /><br />
-  <input type="submit" value="Add User" />
-</form>
+<div class="add-user-page">
+  <div class="form-container">
+    <h1>Add New User</h1>
 
-<% if(typeof message !== 'undefined'){ %>
-<p style="color: red"><%= message %></p>
+    <% if(typeof message !== 'undefined'){ %>
+    <div class="message"><%= message %></div>
+    <% } %>
 
-<a href="/admin/dashboard">Back</a>
-<% } %> <% include('../layouts/footer.ejs') %>
+    <form action="" method="post" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="Enter Name"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="Enter Email"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="mobile">Mobile Number</label>
+        <input
+          type="text"
+          id="mobile"
+          name="mobile"
+          placeholder="Enter Mobile"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="image">Profile Image</label>
+        <input type="file" id="image" name="image" accept="image/*" required />
+      </div>
+
+      <input type="submit" value="Add User" />
+    </form>
+
+    <% if(typeof message !== 'undefined'){ %>
+    <a href="/admin/dashboard" class="back-link">← Back to Dashboard</a>
+    <% } %>
+  </div>
+</div>
+
+<%- include('../layouts/footer.ejs') %>

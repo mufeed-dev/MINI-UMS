@@ -1,59 +1,48 @@
-<% include('../layouts/header.ejs') %>
+<%- include('../layouts/header.ejs') %>
 
-<h1>Dashboard</h1>
+<div class="dashboard-page">
+  <h1>Dashboard</h1>
 
-<a href="/admin/new-user">Add New User</a><br /><br />
-<style>
-  table {
-    width: 50%;
-    border-collapse: collapse;
-    margin: 20px 0;
-  }
-  th,
-  td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-  }
-  th {
-    background-color: #f2f2f2;
-  }
-  img {
-    max-width: 50px;
-    max-height: 50px;
-  }
-</style>
+  <a href="/admin/new-user" class="btn">Add New User</a><br /><br />
 
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Email</th>
-    <th>Mobile</th>
-    <th>Image</th>
-    <th>Verified</th>
-    <th>Action</th>
-  </tr>
-  <% if(users.length > 0) { for(let i = 0; i < users.length; i++) { %>
-  <tr>
-    <td><%= users[i].name %></td>
-    <td><%= users[i].email %></td>
-    <td><%= users[i].mobile %></td>
-    <td>
-      <% if(users[i].image) { %>
-      <img src="/userImages/<%= users[i].image %>" alt="User Image" />
-      <% } else { %> No Image <% } %>
-    </td>
-    <td><%= users[i].is_verified === 1 ? "✅" : "❌" %></td>
-    <td><a href="/admin/edit-user?id=<%= users[i]._id %>">Edit</a></td>
-  </tr>
-  <% } } else { %>
-  <tr>
-    <td colspan="5">No users found!</td>
-  </tr>
-  <% } %>
-</table>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Mobile</th>
+        <th>Image</th>
+        <th>Verified</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if(users.length > 0) { for(let i = 0; i < users.length; i++) { %>
+      <tr>
+        <td><%= users[i].name %></td>
+        <td><%= users[i].email %></td>
+        <td><%= users[i].mobile %></td>
+        <td>
+          <% if(users[i].image) { %>
+          <img src="/userImages/<%= users[i].image %>" alt="User Image" />
+          <% } else { %> No Image <% } %>
+        </td>
+        <td><%= users[i].is_verified === 1 ? "✅" : "❌" %></td>
+        <td class="action-links">
+          <a href="/admin/edit-user?id=<%= users[i]._id %>">Edit</a>
+          <a href="/admin/delete-user?id=<%= users[i]._id %>">Delete</a>
+        </td>
+      </tr>
+      <% } } else { %>
+      <tr>
+        <td colspan="6" style="text-align: center">No users found!</td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
 
-<br />
-<a href="/admin/home">Go to Home</a>
+  <br />
+  <a href="/admin/home" class="btn">Go to Home</a>
+</div>
 
-<% include('../layouts/footer.ejs') %>
+<%- include('../layouts/footer.ejs') %>

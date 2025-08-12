@@ -1,14 +1,16 @@
-<% include('../layouts/header.ejs') %>
+<%- include('../layouts/header.ejs') %>
 
-<h1>Reset Password</h1>
+<div class="reset-password-page">
+  <h1>Reset Password</h1>
 
-<% if(typeof message !== 'undefined'){ %>
-<h3><%= message %></h3>
-<% } %>
+  <% if(typeof message !== 'undefined'){ %>
+  <div class="message"><%= message %></div>
+  <% } %>
 
-<form action="" method="post">
-  <input type="email" name="email" placeholder="Enter Email" /><br /><br />
-  <input type="submit" value="Reset" />
-</form>
+  <form action="" method="post">
+    <input type="email" name="email" placeholder="Enter Email" required />
+    <input type="submit" value="Reset Password" />
+  </form>
 
-<% include('../layouts/footer.ejs') %>
+  <%- include('../layouts/footer.ejs') %>
+</div>

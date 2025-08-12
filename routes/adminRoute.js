@@ -17,7 +17,6 @@ admin_route.set("views", "./views/admin");
 const multer = require("multer");
 const path = require("path");
 
-admin_route.use(express.static("public"));
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join(__dirname, "../public/userImages"));
@@ -49,6 +48,7 @@ admin_route.get("/new-user", auth.isLogin, adminController.newUser);
 admin_route.post("/new-user", upload.single("image"), adminController.addUser);
 admin_route.get("/edit-user", auth.isLogin, adminController.editUser);
 admin_route.post("/edit-user", adminController.updateUser);
+admin_route.get("/delete-user", adminController.deleteUser);
 
 admin_route.get("*any", (req, res) => {
   res.redirect("/admin");

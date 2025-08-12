@@ -1,39 +1,45 @@
-<% include('../layouts/header.ejs') %>
+<%-include('../layouts/header.ejs') %>
 
-<h1>Welcome, <%= user.name %></h1>
-
-<table width="50%">
-  <tr>
-    <td>
+<div class="user-home-page">
+  <div class="profile-container">
+    <div class="profile-header">
+      <h1>Welcome, <%= user.name %></h1>
       <img
-        src="userImages/<%=user.image%>"
-        width="100px"
-        height="100px"
-        alt="<%=user.image%>"
+        src="/userImages/<%=user.image%>"
+        onerror="this.src='/images/default-profile.png'"
+        class="profile-image"
+        alt="Profile Picture"
       />
-    </td>
-  </tr>
-  <tr>
-    <td>email</td>
-    <td><%=user.email%></td>
-  </tr>
-  <tr>
-    <td>Mobile</td>
-    <td><%=user.mobile%></td>
-  </tr>
-  <tr>
-    <td>verified</td>
-    <td>
-      <% if(user.is_verified == 1) { %>
-      <p>✅</p>
-      <% }else{ %>
-      <p>❌</p>
-      <% } %>
-    </td>
-  </tr>
-</table>
-<br />
-<a href="/edit?id=<%=user._id%>">Edit Profile</a><br /><br />
+    </div>
 
-<a href="/logout">Logout</a>
-<% include('../layouts/footer.ejs') %>
+    <table class="profile-table">
+      <tr>
+        <td>Email</td>
+        <td><%= user.email %></td>
+      </tr>
+      <tr>
+        <td>Mobile</td>
+        <td><%= user.mobile %></td>
+      </tr>
+      <tr>
+        <td>Verification Status</td>
+        <td>
+          <% if(user.is_verified == 1) { %>
+          <span class="verification-status verified">✅ Verified</span>
+          <% } else { %>
+          <span class="verification-status not-verified">❌ Not Verified</span>
+          <% } %>
+        </td>
+      </tr>
+    </table>
+
+    <div class="action-links">
+      <a href="/edit?id=<%=user._id%>" class="action-link edit-link"
+        >Edit Profile</a
+      >
+      <a href="/logout" class="action-link logout-link">Logout</a>
+    </div>
+  </div>
+</div>
+
+<%- include('../layouts/footer.ejs') %>

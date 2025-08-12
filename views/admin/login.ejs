@@ -1,21 +1,33 @@
-<% include('../layouts/header.ejs') %>
+<%- include('../layouts/header.ejs') %>
 
-<h1>Admin Login</h1>
+<div class="admin-login-page">
+  <div class="login-container">
+    <h1>Admin Login</h1>
 
-<% if(typeof message !== 'undefined'){ %>
-<h3><%= message %></h3>
-<% } %>
+    <% if(typeof message !== 'undefined'){ %>
+    <div class="alert-message"><%= message %></div>
+    <% } %>
 
-<form action="" method="post">
-  <input type="email" name="email" placeholder="Enter Email" /><br /><br />
-  <input
-    type="password"
-    name="password"
-    placeholder="Enter Password"
-  /><br /><br />
-  <input type="submit" value="Login" />
-</form>
+    <form action="" method="post">
+      <div class="form-group">
+        <input type="email" name="email" placeholder="Enter Email" required />
+      </div>
 
-<a href="/admin/forget">Forget Password</a>
+      <div class="form-group">
+        <input
+          type="password"
+          name="password"
+          placeholder="Enter Password"
+          required
+          minlength="8"
+        />
+      </div>
 
-<% include('../layouts/footer.ejs') %>
+      <input type="submit" value="Login" />
+    </form>
+
+    <a href="/admin/forget" class="forgot-password">Forgot Password?</a>
+  </div>
+</div>
+
+<%- include('../layouts/footer.ejs') %>
